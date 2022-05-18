@@ -7,6 +7,8 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
+**/__pycache__/
+*.pyc
 web-build/
 
 # macOS
