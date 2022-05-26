@@ -12,11 +12,30 @@ const OutputScreen = ({ route, navigation }) => {
 	const [disableDownload, setDisableDownload] = useState(true);
   console.log(route)
   const scannedImageP = route.params.scannedImageP;
+  const scannedImagePDF = route.params.scannedImagePDF;
+  const scannedImageDoc = route.params.scannedImageDoc;
   console.log("inner", scannedImageP);
 	
   const saveFile = async () => {
 		const asset = await MediaLibrary.createAssetAsync(scannedImageP);
 		await MediaLibrary.createAlbumAsync("CasecadeOCR", asset, false);
+    showToast();
+    navigation.goBack();
+	}
+
+  const saveFilePDF = async () => {
+		const asset = await MediaLibrary.createAssetAsync(scannedImagePDF);
+		await MediaLibrary.createAlbumAsync("CasecadeOCR", asset, false);
+    showToast();
+    navigation.goBack();
+	}
+
+  const saveFileDoc = async () => {
+    console.log("downloading doc");
+    console.log(scannedImageDoc);
+		const asset = await MediaLibrary.createAssetAsync(scannedImageDoc);
+		await MediaLibrary.createAlbumAsync("CasecadeOCR", asset, false);
+
     showToast();
     navigation.goBack();
 	}
@@ -45,9 +64,12 @@ const OutputScreen = ({ route, navigation }) => {
 			}
 			</View>
 			</View>
-			<View style={{flex: .3, backgroundColor:"black", justifyContent: 'center', alignItems: 'center'}}>
-          <TouchableOpacity style={styles.round} onPress={saveFile}>
-            <Text style={styles.buttonLabel2} disabled={disableDownload}>Download Image</Text>
+			<View style={{flex: .3, flexDirection:"row", backgroundColor:"black", justifyContent: 'space-between', alignItems: 'center', resizeMode: 'contain'}}>
+          <TouchableOpacity style={styles.round} onPress={saveFilePDF}>
+            <Text style={styles.buttonLabel2} disabled={disableDownload}>Download PDF</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.round} onPress={saveFileDoc}>
+            <Text style={styles.buttonLabel2} disabled={disableDownload}>Download Doc</Text>
           </TouchableOpacity>
       </View >
 		</SafeAreaView>
@@ -85,7 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-    width: 300,
+    width: 190,
     borderRadius: 40,
     backgroundColor: '#34b4eb',
   }

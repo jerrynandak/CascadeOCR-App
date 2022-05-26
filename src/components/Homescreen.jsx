@@ -14,6 +14,8 @@ const Homescreen = ({ navigation }) => {
   const [disableUpload, setDisableUpload] = useState(true);
   const [image, setImage] = useState(null);
   const [scannedImagePath, setScannedImagePath] = useState('');
+  const [scannedImagePathPDF, setScannedImagePathPDF] = useState('');
+  const [scannedImagePathDoc, setScannedImagePathDoc] = useState('');
   const [didMount, setDidMount] = useState(true)
 
   useEffect(() => {
@@ -48,14 +50,17 @@ const Homescreen = ({ navigation }) => {
         setDidMount(false);
         return;
     }
-    navigation.navigate('Outputscreen',{scannedImageP: scannedImagePath});
-  }, [scannedImagePath])
+    navigation.navigate('Outputscreen',{scannedImageP: scannedImagePath, scannedImagePDF: scannedImagePathPDF, scannedImageDoc: scannedImagePathDoc});
+  }, [scannedImagePathDoc])
 
 	const downloadFile = async () => {
 		let uri = "";
 		let route = "/images/corrected.png";
-
+    let route_pdf = "/pdfs/result.pdf";
+    let route_doc = "/docs/result.docx";
 		uri = schema + hostMain + ":" + port + route;
+    uri_pdf = schema + hostMain + ":" + port + route_pdf;
+    uri_doc = schema + hostMain + ":" + port + route_doc;
 
 		let fileUri = FS.cacheDirectory + "corrected" + Math.random().toString(36).slice(2) + ".png";
     console.log("out", fileUri);
@@ -63,6 +68,30 @@ const Homescreen = ({ navigation }) => {
 		.then(({ uri }) => {
       console.log("in", uri)
       setScannedImagePath(uri);
+      //navigation.navigate('Outputscreen',{scannedImageP: uri});
+		})
+		.catch(error => {
+			console.error(error);
+		});
+
+    fileUri = FS.cacheDirectory + "corrected" + Math.random().toString(36).slice(2) + ".pdf";
+    console.log("out", fileUri);
+		result = await FS.downloadAsync(uri_pdf, fileUri)
+		.then(({ uri }) => {
+      console.log("in", uri)
+      setScannedImagePathPDF(uri);
+      //navigation.navigate('Outputscreen',{scannedImageP: uri});
+		})
+		.catch(error => {
+			console.error(error);
+		});
+
+    fileUri = FS.cacheDirectory + "corrected" + Math.random().toString(36).slice(2) + ".doc";
+    console.log("out", fileUri);
+		result = await FS.downloadAsync(uri_doc, fileUri)
+		.then(({ uri }) => {
+      console.log("in", uri)
+      setScannedImagePathDoc(uri);
       //navigation.navigate('Outputscreen',{scannedImageP: uri});
 		})
 		.catch(error => {

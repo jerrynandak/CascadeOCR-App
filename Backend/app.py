@@ -30,5 +30,13 @@ def image():
 def serve_image(filename):
     return send_from_directory(basedir, filename)
 
+@app.route('/pdfs/<path:filename>')
+def server_pdf(filename):
+    return send_from_directory(basedir, filename)
+
+@app.route('/docs/<path:filename>')
+def server_doc(filename):
+    return send_from_directory(basedir, filename)
+
 if __name__ == '__main__':
     app.run(host="192.168.43.104", port=5000)

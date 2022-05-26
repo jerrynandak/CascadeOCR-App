@@ -7,6 +7,7 @@ from scipy.ndimage import interpolation as inter
 import numpy as np
 import cv2
 import os
+import tesseract
 (img_width, img_height) = (224, 224)
 
 def display_img(images, size=10):
@@ -90,7 +91,7 @@ def preprocess(img):
     
     #x_test = []
     #x_test.append(resized_img)
-                  
+    
     #x_np = np.array(x_test)
     #print(x_np.shape)
     
@@ -104,5 +105,8 @@ def preprocess(img):
     #rotated_img = rotate_image(x_np[0], int(pred_angle[0]))
     #angle, rotated = correct_skew(img_denoised)
     
+    tesseract.tesseract_pdf(img_denoised)
+    tesseract.tesseract_word(img_denoised)
     #display_img(rotated)
     return img_contour
+
